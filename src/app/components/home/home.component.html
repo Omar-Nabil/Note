@@ -1,0 +1,44 @@
+<header class="py-4">
+  <div class="w-75 mx-auto">
+    <mat-form-field class="example-form-field w-100">
+      <mat-label>Search..</mat-label>
+      <input matInput type="text" [(ngModel)]="value">
+      <button *ngIf="value" matSuffix mat-icon-button aria-label="Clear" (click)="value=''">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-form-field>
+  </div>
+
+  <button mat-raised-button color="primary" class="d-block ms-auto" (click)="addNote()">Add Note</button>
+</header>
+
+<section class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
+  <div *ngFor="let note of notes|filter:value; index as index" class="col">
+
+    <div class="card h-100 shadow">
+      <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu"
+        class="position-absolute end-0">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item (click)="setData(note)">
+          <mat-icon>edit</mat-icon>
+          <span>Edit</span>
+        </button>
+        <button mat-menu-item [swal]="deleteSwal">
+          <mat-icon>delete</mat-icon>
+          <span>Delete</span>
+          <swal #deleteSwal title="Delete {{ note.title }}?" text="This cannot be undone" icon="question"
+            [showCancelButton]="true" [focusCancel]="true" (confirm)="deleteNote(note._id, index)">
+          </swal>
+
+        </button>
+      </mat-menu>
+      <div class="card-body text-center">
+        <h4 class="card-title h6 px-5">{{note.title}}</h4>
+        <p class="card-text small text-muted">{{note.desc}}</p>
+      </div>
+    </div>
+
+  </div>
+</section>
